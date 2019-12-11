@@ -498,3 +498,226 @@ React DevTools es una herramienta muy parecida al Inspector de Elementos. Nos pe
 
 Encuentra más información sobre está herramienta en: github.com/facebook/react-devtools.
 
+## React Router y Redux
+
+### ¿Qué es React Router y cómo instalarlo?
+
+instalación: ``npm install react-router-dom --save``
+
+### Crear nuestro archivo de Rutas
+
+Dentro de nuestro proyecto vamos a crear una carpeta llamada routes donde vamos a ir añadiendo las rutas que necesitemos en la aplicación.
+
+Las rutas que añadamos debemos definirlas con el componente ``Route`` y estas deben estar encapsuladas dentro del componente ``BrowserRouter`` del paquete de ``react-router-dom``. Para definir una ruta con el componente Route debemos pasarle las props de:
+
+- path para indicar la url.
+- exact si queremos que funcione única y exactamente con la url que le digamos.
+- component para indicarle el componente que va a renderizar.
+
+Vamos a crear una función dentro la carpeta de rutas con el nombre de App.js. Esté archivo solo va ha contener componetes que vienen desde react-router y que vamos a utilizar para añadir cada una de las rutas que necesito. Lo primero que necesitaremos es **BrowserRouter** el cual va ha encapsular cada uno de los componentes que necesitamos para ahí poder trabajar con la ruta.
+
+**Route**: nos permite añadir el elemento que necesitamos dentro de browserRouter que se va ha encargar de manejar nuestra aplicación y de saber que estamos manejando rutas.
+
+### Container: Login
+
+Ahora vamos a trabajar con la ruta de login y una de las cosas que necesitamos es preparar nuestro proyecto para mandar un nueva ruta, ahora vamos a crear el componente de Login.
+
+Una vez construido nuestro componente Login con sus estilos, estamos listos para ocuparlo, ahora lo que haremos será integrar nuestro componente en el archivo de App.js de la carpeta de routes.
+
+```js
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Home from '../containers/Home';
+import Login from '../containers/Login';
+
+
+const App = () => (
+  <BrowserRouter>
+    <Route exact path="/" component={Home} />
+    <Route exact path="/login" component={Login} />
+  </BrowserRouter>
+);
+
+export default App;
+```
+
+Si nosotros hacemos match en la ruta de "/login" nuestro servidor nos marcará un error, porque cuando nosotros estamos trabajando con nuestro entorno de desarrollo local, debemos prepararlo para que pueda manejar el uso de rutas. Para solucionarlo debemos irnos a nuestro archivo de webpack.config.js y vamos a añadir una configuración antes de plugins, está configuración se va ha encargar de trabajar con la parte de devServer y le vamos a pasar el historyApiFallback que nos va ha permitir.
+
+```js
+module.exports = {
+  {/*...*/}
+  devServer: {  
+    historyApiFallback: true,  
+  },
+  {/*...*/}
+}
+```
+
+Ahora vamos a añadir la section de registro creando esté componente en nuestros containers, añadiendo sus estilos y creando la ruta que vamos a ocupara para la section de registro 
+
+Ahora lo que tenemos que hacer es reiniciar nuestro servidor para que webpackdev-server se ejecute con las nuevas configuraciones que acabamos de poner.
+
+### Switch
+
+Ahora vamos a hacer algo interesante que nos va ha manejar nuestras rutas vamos a manejar un componente que también nace de react-router-dom el cual va ha manejar un Switch como normalmente lo manejamos en la lógica de Javascript esté va ha empuejar la section que necesitamos según el path al que nostros estamos llamando.
+
+Un ejemplo común es que si nosotros lanzamos más de un componente con el mismo path, react-router va ha empuejar a los 3 componentes en la misma página y con Switch nosotros aseguramos que estó no suceda, con estó aseguramos que solo haga render con el primer hijo que tenga la url que estamos pidiendo al servidor.
+
+```js
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Home from '../containers/Home';
+import Layout from '../components/Layout';
+import Login from '../containers/Login';
+import Register from '../containers/Register';
+
+
+const App = () => (
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/registro" component={Register} />
+    </Switch>
+  </BrowserRouter>
+);
+
+export default App;
+```
+
+De está forma va ha ser el if de cada path y con esto evitamos mandar más de un hijo con el mismo path.
+
+### Container: 404 Not Found
+
+Es importante siempre tener una ruta que renderice un componente para las urls que no existan, debemos añadir esta ruta al final del Switch para que sea el caso por default.
+
+Fragment nos permite no añadir elementos extra al DOM, podemos utilizar Fragment de 2 maneras:
+
+1. Añadiendo el componente o .
+2. O implemente encapsulando nuestros elementos dentro de <>.
+
+### Layout 
+
+Para que nuestra aplicación maneje el Header y el Footer cada que nos movemos dentro de cada una de las rutas que ya establecimos debemos de crear un nuevo componente llamado Layout el cuál se va ha encargar de manejar la persistencia del Header y el Footer y así cambiar cada que nos movamos dentro de una ruta, hacer el render del componente que necesitamos, para esto nos vamos a mover dentro de nuestro editor de código dentro de components y vamos a crear esté componente llamado Layout.
+
+### Redux
+
+¿Qué es Redux?
+
+Redux es una librería esrita por Javascript creada por Dan Abramov basada en la arquitectura flux propuesta por facebook e inspirada en un lenguaje funcional, redux se basa en 3 principios fundamentales, el primero es que es una fuente de la verdad, el segundo es que el estado es de solo lectura y el tercero es que solo podemos usar funciones puras, con redux vamos a poder manejar el flujo de la creación de nuestra aplicación y en esté caso en nuestra aplicación platziVideo .
+
+1. Solamente hay una fuente de la verdad.
+2. El estado es de solo lectura.
+3. Solamente podemos utilizar funciones puras.
+
+### ¿Qué es Redux? Profundizando en la herramienta
+
+Redux nos permite tener un contenedor predecible del estado en aplicaciones creadas con JavaScript, Nos ayuda a escribir aplicaciones que se comportan de una manera consistente, Esto significa que podemos utilizar esta lógica en aplicaciones del lado del cliente, trabajar del lado del servidor o crear aplicaciones para dispositivos móviles.
+
+Uno de los principales uso que tiene Redux es con React pero puede ser implementado en cualquier librería o proyecto que este construido con JavaScript, lo cual incluye a Angular, Vue o algún otro framework o librería.
+
+Redux nace de la arquitectura Flux, tomando inspiración del lenguaje funcional Elm y es creado por Dan Abramov y Andrew Clark en el 2015, Hoy en día es una de las librerías más utilizadas para el manejo del flujo de la información en aplicaciones.
+
+Una de las principales motivaciones para crear Redux nace en resolver un problema y era el manejo del estado y el flujo de nuestras aplicaciones creadas en JavaScript. Redux propone una forma de manejar el estado donde podamos controlar cómo vamos a interactuar con otros elementos (llamadas a un API) o interacciones dentro de nuestra aplicación, teniendo en cuenta esto, Redux intenta de predecir las mutaciones que pueda sufrir el estado, creando restricciones de cuando y como pueden ser ejecutadas las actualizaciones en nuestras aplicaciones.
+
+Redux es una librería muy pequeña que se puede incorporar en cualquier proyecto construido en JavaScript y se basa en tres principios:
+
+#### Única fuente de la verdad:
+Nuestra aplicación solo debe de tener un único Store y es la única fuente de información.
+
+#### El estado es de solo lectura
+La única forma de modificar el estado es emitiendo un acción, este objeto describe lo que va a ocurrir.
+
+#### Los cambios se realizan con funciones puras
+Para realizar cambios al estado es necesario utilizar Reducers los cuales son funciones puras que toman el estado anterior, una acción y devuelve un nuevo estado con las modificaciones necesarias.
+
+Teniendo en cuenta esta información continuaremos en el curso explicando cada uno de estos elementos que incorpora Redux en nuestra aplicación Platzi Video.
+
+### instalación:
+
+```
+npm install redux react-redux --save
+```
+
+### Integración de Redux
+
+React redux nos da un provider que nos va ha permitir encapsular nuestros componentes por medio de un connect el cuál va ha tener toda la información del store transmitida ha estos componentes de esta forma nosotros vamos a poder extraer nuestro estado que tengamos en toda nuestra aplicación y de está forma poder tener en cada uno de los componentes la información que necesita 
+
+```js
+import React from 'react';
+import ReactDom from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import App from './routes/App';
+
+const app = document.getElementById('App');
+
+// ReactDom.render(que voy a renderear, donde lo voy a renderear)
+ReactDom.render(
+  <Provider>
+    <App />
+  </Provider>,
+  app);
+```
+
+### Creando el Store de Redux 
+
+Ya que tenemos dentro de nuestro proyecto Redux y React-redux es momento de trabajar con el estado, nosotros vamos a utilizar el elemento que teníamos para trabajar con json server y habilitar un fakeApi, la vamos a mandar a nuestro proyecto, para hacer un initialState, el cual nos va ha permitir tener esa información initial para nuestro proyecto, podersela mandar a toda nuestra aplicación y utilizarla por medio del connect.
+
+```js
+import React from 'react';
+import ReactDom from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import App from './routes/App';
+import initialState from './initialState';
+import reducer from './reducers/index';
+
+const app = document.getElementById('App');
+const store = createStore(reducer, initialState);
+// ReactDom.render(que voy a renderear, donde lo voy a renderear)
+ReactDom.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  app);
+```
+
+### Creando Reducers
+
+Para manejar el flujo de nuestra aplicación vamos a trabajar ahora con los actions y con los reducers que va ha necesitar, la section de nuestro proyecto que sería la de añadir a mi lista, esto significa que nosotros al ocupar el botón que tenemos en cada uno de nuestros Items vamos a añadirlos a esta lista donde podemos verlos despues o simplemente guardalos como los favoritos que tenemos, para esto nos vamos a mover a nuestro editor de código y vamos a identificar 2 archivos particularmente, nuestros ``actions`` y nuestros ``reducers``.
+
+Los actions solo se encargan de describir la información que vamos a hacer y pasar un objeto que vamos a tener disponible dentro de nuestro reducer el cuál despues va ha tomar la action que nosotros estamos ejecutando para ver como lo va ha guardar dentro de nuestro estado, vamos a hacer la función que describe lo que vamos a hacer.
+
+Un action de Redux va a contener dos elementos:
+
+**type**: para indicar la acción que se va a ejecutar.
+**payload**: es la información que estamos mandando al reducer.
+Dentro de los reducers usaremos un ``switch`` para separar la lógica por cada tipo de acción que tendremos en Redux.
+
+actions:
+```js
+export const setFavorite = payload => ({
+  type: 'SET_FAVORITE',
+  payload
+});
+```
+
+reducers:
+```js
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_FAVORITE':
+      return {
+        ...state,
+        myList: [...state.myList, action.payload]
+      }
+    default:
+      return state
+  }
+};
+
+export default reducer;
+```
+
+

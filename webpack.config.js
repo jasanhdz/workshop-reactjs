@@ -12,9 +12,6 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
-  devServer: {
-    port: 9000
-  },
   module: {
     rules: [
       {
@@ -51,6 +48,10 @@ module.exports = {
         }
       }
     ]
+  },
+  devServer: {
+    port: 9000,
+    historyApiFallback: true
   },
   plugins: [
     new HtmlWebpackPlugin({
