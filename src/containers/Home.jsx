@@ -6,13 +6,15 @@ import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
 import useInitialState from '../hooks/useInitialState';
+import Header from '../components/Header';
 
 const API = 'http://localhost:3000/initalState';
 
 const Home = (props) => {
   return (
     <React.Fragment>
-      <Search />
+      <Header />
+      <Search isHome />
       {
         props.myList.length  > 0 && 
         <Categories title="My List">

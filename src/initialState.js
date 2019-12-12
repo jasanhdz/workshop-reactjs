@@ -1,4 +1,5 @@
 const initialState = {
+  "path": "",
   "user": {},
   "playing": {},
   "myList": [],

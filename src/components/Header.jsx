@@ -5,18 +5,23 @@ import PropTypes from 'prop-types';
 import { logoutRequest } from '../actions';
 import '../assets/styles/components/header.scss';
 import Logo from '../assets/static/logo-platzi-video-BW2.png';
-import LogoNetflix from '../assets/static/logo_netflix.png';
+// import LogoNetflix from '../assets/static/logo_netflix.png';
 import userIcon from '../assets/static/user-icon.png';
 import gravatar from '../utils/gravatar';
+import ClassNames from 'classnames';
 
 const Header = (props) => {
-  const { user } = props;
+  const { user, isLogin } = props;
   const hasUser = Object.keys(user).length > 0;
   const handleLogout = e => {
     props.logoutRequest({});
   }
+  const headerClass = ClassNames('header', {
+    isLogin,
+  });
+  
   return (
-    <header className="header">
+    <header className={headerClass}>
       <Link to="/">
         <img className="header__img" src={Logo} alt="logo" />
       </Link>

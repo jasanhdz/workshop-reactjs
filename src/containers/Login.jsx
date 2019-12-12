@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import googleIcon from '../assets/static/google-icon.png';
 import twitterIcon from '../assets/static/twitter-icon.png';
 import '../assets/styles/components/Login.scss';
+import Header from '../components/Header';
+
 
 const Login = props => {
   const [form, setValues] = useState({
@@ -25,6 +27,8 @@ const Login = props => {
   }
 
   return (
+    <>
+    <Header isLogin />
     <section className="login">
       <div className="login__container">
         <h2 tabIndex="0">Inicia Sesión</h2>
@@ -69,6 +73,7 @@ const Login = props => {
         </p>
       </div>
     </section>
+    </>
   );
 }
 

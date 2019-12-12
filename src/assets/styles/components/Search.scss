@@ -7,12 +7,16 @@
   color: white;
   justify-content: center;
 }
+
+.main .isHome {
+  width: 70%;
+}
+
 .main__title {
   font-size: 25px;
 }
 .main__input {
   color: white;
-  width: 70%;
   height: 50px;
   border-radius: 20px;
   border: 1.5px solid white;
